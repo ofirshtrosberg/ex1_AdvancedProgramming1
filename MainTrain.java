@@ -54,7 +54,7 @@ public class MainTrain {
 		Board b = Board.getBoard();
 		if(b!=Board.getBoard())
 			System.out.println("board should be a Singleton (-5)");
-
+//		Tile[][] tiles = b.getTiles();
 
 		Bag bag = Bag.getBag();
 		Tile[] ts=new Tile[10];

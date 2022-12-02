@@ -3,11 +3,11 @@ package test;
 import java.util.Arrays;
 
 public class Board {
-    private static int[][] wordScore;
-    private static int[][] letterScore;
+    private static int[][] wordScore = null;
+    private static int[][] letterScore = null;
     private Tile[][] boardTiles;
     private static Board board = null;
-    private Board(){
+    private void createScores(){
         wordScore = new int[15][15];
         letterScore = new int[15][15];
         for (int i = 0; i < 15; i++) {
@@ -72,12 +72,19 @@ public class Board {
             }
         }
     }
+    private Board(){
+        if(letterScore==null&&wordScore==null)
+            createScores();
+        boardTiles = new Tile[15][15];
+    }
     public static Board getBoard()
     {
-        System.out.println(Arrays.deepToString(wordScore));
-        System.out.println(Arrays.deepToString(letterScore));
         if (board == null)
             board = new Board();
         return board;
+    }
+    Tile[][] getTiles(){
+        ///// check if works
+        return Arrays.stream(boardTiles).map(Tile[]::clone).toArray(Tile[][]::new);
     }
 }
