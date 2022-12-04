@@ -1,6 +1,8 @@
 package test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Board {
     private int turn;
@@ -8,6 +10,7 @@ public class Board {
     private static int[][] letterScore = null;
     private Tile[][] boardTiles;
     private static Board board = null;
+    private List<Word> wordsInBoard;
 
     private void createScores() {
         wordScore = new int[15][15];
@@ -70,6 +73,7 @@ public class Board {
             createScores();
         boardTiles = new Tile[15][15];
         turn = 1;
+        wordsInBoard = new ArrayList<Word>();;
     }
 
     public static Board getBoard() {
@@ -185,35 +189,43 @@ public class Board {
     boolean dictionaryLegal(Word word) {
         return true;
     }
-//    int scoreOfNewWordsCreated(){
-//
-//    }
+    int scoreOfNewWordsCreated(Word word){
+        int wordCol = word.getCol();
+        int wordRow = word.getRow();
+        int wordLength = word.getCol();
+        int newWordCol;
+        int newWordRow;
+        int newWordLength;
+        int score = 0;
+        //////////!!!!!
+
+        return score;
+    }
     int getScore(Word word) {
         if (word == null || !boardLegal(word) || !dictionaryLegal(word))
             return 0;
+        int row = word.getRow();
+        int col = word.getCol();
         int wordLength = word.getTiles().length;
         int lettersScore = 0;
         int wordBonusesMultipleBy = 1;
         for (int i = 0; i < wordLength; i++) {
-//            if(word.getTiles()[i]==null){
-//                continue;
-//            }
             if (word.isVertical()) {
                 if(word.getTiles()[i]==null){
-                    lettersScore += (boardTiles[i + word.getRow()][word.getCol()].score) * (letterScore[i + word.getRow()][word.getCol()]);
-                    wordBonusesMultipleBy *= wordScore[i + word.getRow()][word.getCol()];
+                    lettersScore += (boardTiles[i + row][col].score) * (letterScore[i + row][col]);
+                    wordBonusesMultipleBy *= wordScore[i + row][col];
                     continue;
                 }
-                lettersScore += (word.getTiles()[i].score) * (letterScore[i + word.getRow()][word.getCol()]);
-                wordBonusesMultipleBy *= wordScore[i + word.getRow()][word.getCol()];
+                lettersScore += (word.getTiles()[i].score) * (letterScore[i + row][col]);
+                wordBonusesMultipleBy *= wordScore[i + row][col];
             } else {
                 if(word.getTiles()[i]==null){
-                    lettersScore += (boardTiles[word.getRow()][i + word.getCol()].score) * (letterScore[word.getRow()][i + word.getCol()]);
-                    wordBonusesMultipleBy *= wordScore[word.getRow()][i + word.getCol()];
+                    lettersScore += (boardTiles[row][i + col].score) * (letterScore[row][i + col]);
+                    wordBonusesMultipleBy *= wordScore[row][i + col];
                     continue;
                 }
-                lettersScore += (word.getTiles()[i].score) * (letterScore[word.getRow()][i + word.getCol()]);
-                wordBonusesMultipleBy *= wordScore[word.getRow()][i + word.getCol()];
+                lettersScore += (word.getTiles()[i].score) * (letterScore[row][i + col]);
+                wordBonusesMultipleBy *= wordScore[row][i + col];
             }
         }
         return lettersScore * wordBonusesMultipleBy;
@@ -237,12 +249,14 @@ public class Board {
                 boardTiles[row][col+i] = word.getTiles()[i];
 
         }
+        wordsInBoard.add(word);
+        int scoreOfNewWords = scoreOfNewWordsCreated(word);
         if(turn==1){
             int score = getScore(word);
             turn++;
             wordScore[7][7]=1;
-            return score;
+            return score + scoreOfNewWords;
         }
-        return getScore(word);
+        return getScore(word) + scoreOfNewWords;
     }
 }

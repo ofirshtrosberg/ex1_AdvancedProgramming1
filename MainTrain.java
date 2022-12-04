@@ -84,7 +84,6 @@ public class MainTrain {
 
 		// creates the word farms
 		Word paste=new Word(get("PASTE"), 9, 5, false);
-		int score = b.tryPlaceWord(paste);
 		if(b.tryPlaceWord(paste)!=25)
 			System.out.println("problem in placeWord for 3ed word (-10)");
 
@@ -102,5 +101,4 @@ public class MainTrain {
 		testBoard(); // 70 points
 		System.out.println("done");				
 	}
-
 }
